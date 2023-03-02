@@ -27,6 +27,9 @@ namespace agl {
    }
 
    PLYMesh::~PLYMesh() {
+      _faces.clear();
+      _positions.clear();
+      _normals.clear();
    }
 
    bool PLYMesh::load(const std::string& filename) {
