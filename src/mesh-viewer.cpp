@@ -44,13 +44,13 @@ public:
 
    void mouseMotion(int x, int y, int dx, int dy) {
       if (mouseIsDown(GLFW_MOUSE_BUTTON_LEFT)) {
-         azimuth += dx*(0.1f);
+         azimuth += dx*(0.05f);
          // if(azimuth>2*M_PI){
          //    azimuth-=2*M_PI;
          // } else if(azimuth<0){
          //    azimuth+=2*M_PI;
          // }
-         elevation += dy*(0.1f);
+         elevation += dy*(0.05f);
          // if(elevation>M_PI_2){
          //    azimuth+=M_PI;
          //    elevation = M_PI-elevation;
