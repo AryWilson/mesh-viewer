@@ -3,7 +3,7 @@
 // Date:
 // Description: Loads PLY files in ASCII format
 //--------------------------------------------------
-
+#define _USE_MATH_DEFINES
 #include <cmath>
 #include <string>
 #include <vector>
@@ -44,6 +44,20 @@ public:
 
    void mouseMotion(int x, int y, int dx, int dy) {
       if (mouseIsDown(GLFW_MOUSE_BUTTON_LEFT)) {
+         azimuth += dx;
+         if(azimuth>2*M_PI){
+            azimuth-=2*M_PI;
+         } else if(azimuth<0){
+            azimuth+=2*M_PI;
+         }
+         elevation = elevation + dy;
+         if(elevation>M_PI_2){
+            azimuth+=M_PI;
+            elevation = M_PI-elevation;
+         } else if(elevation<-1*M_PI_2){
+            azimuth+=M_PI;
+            elevation = -1*M_PI-elevation;
+         }
          //update angle?
          // x = radius * sin(azimuth) * cos(elevation)
          // y = radius * sin(elevation)
@@ -80,9 +94,22 @@ public:
          mesh = PLYMesh("../models/"+models[currentModel]);
          cout << models[currentModel]<< endl;
 
+      } else if (GLFW_KEY_UP){
+         scroll(1,1);
+      }
+      else if (GLFW_KEY_DOWN){
+         scroll(-1,-1);
       }
       // mesh.load("../models/"+models[currentModel]);
 
+
+   }
+
+   void update(){
+      float x = radius * sin(azimuth) * cos(elevation);
+      float y = radius * sin(elevation);
+      float z = radius * cos(azimuth) * cos(elevation);
+      eyePos = vec3(x,y,z);
 
    }
 
@@ -97,6 +124,7 @@ public:
 
 
    void draw() {
+      update();
       float aspect = ((float)width()) / height();
       // renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
 
