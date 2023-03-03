@@ -68,11 +68,15 @@ public:
 
       if (key == 78 || key == 110){
          currentModel= (currentModel+1)% (models.size());
+         mesh.clear();
          mesh = PLYMesh("../models/"+models[currentModel]);
          cout << models[currentModel]<< endl;
+         cout<< mesh.minBounds()<<endl;
+         cout<< mesh.maxBounds()<<endl;
 
       } else if (key == 80|| key == 112){
          currentModel= (currentModel-1)% (models.size());
+         mesh.clear();
          mesh = PLYMesh("../models/"+models[currentModel]);
          cout << models[currentModel]<< endl;
 
