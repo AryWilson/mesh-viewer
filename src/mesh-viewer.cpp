@@ -23,7 +23,7 @@ public:
       upDir = vec3(0, 1, 0);
       models = GetFilenamesInDir("../models", "ply");
       currentModel = 0;
-      // mesh = PLYMesh("../models/"+models[currentModel]);
+      mesh = PLYMesh("../models/"+models[0]);
       radius = 10;
       azimuth = 0;
       elevation = 0;
@@ -31,7 +31,7 @@ public:
 
    void setup() {
       // mesh.load("../models/cube.ply");
-      mesh.load("../models/shark.ply");
+      // mesh.load("../models/shark.ply");
 
       // mesh.load("../models/"+models[currentModel]);
 
@@ -54,16 +54,29 @@ public:
 
    void scroll(float dx, float dy) {
       radius+=dy;
+      if(radius<=0){
+         radius = 1;
+      }
    }
 
    void keyUp(int key, int mods) {
 
       if (key == 78 || key == 110){
          currentModel= (currentModel+1)% (models.size());
+         mesh.clear();
+         mesh.load("../models/"+models[currentModel]);
+         cout << models[currentModel]<< endl;
 
       } else if (key == 80|| key == 112){
          currentModel= (currentModel-1)% (models.size());
+         mesh.clear();
+         mesh.load("../models/"+models[currentModel]);
+         cout << models[currentModel]<< endl;
+
       }
+      // mesh.load("../models/"+models[currentModel]);
+
+
    }
 
 // lookAt() changes the camera position and orientation

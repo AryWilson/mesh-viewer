@@ -13,6 +13,11 @@ using namespace std;
 using namespace glm;
 
 namespace agl {
+   void PLYMesh::clear(){
+      _faces.clear();
+      _positions.clear();
+      _normals.clear();
+   }
 
    PLYMesh::PLYMesh(const std::string& filename) {
       load(filename);

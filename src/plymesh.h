@@ -14,7 +14,7 @@ namespace agl {
    class PLYMesh : public TriangleMesh
    {
    public:
-
+      void clear();
       PLYMesh(const std::string& filename);
       PLYMesh();
 
