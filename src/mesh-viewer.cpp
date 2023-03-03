@@ -44,20 +44,20 @@ public:
 
    void mouseMotion(int x, int y, int dx, int dy) {
       if (mouseIsDown(GLFW_MOUSE_BUTTON_LEFT)) {
-         azimuth += dx;
-         if(azimuth>2*M_PI){
-            azimuth-=2*M_PI;
-         } else if(azimuth<0){
-            azimuth+=2*M_PI;
-         }
-         elevation = elevation + dy;
-         if(elevation>M_PI_2){
-            azimuth+=M_PI;
-            elevation = M_PI-elevation;
-         } else if(elevation<-1*M_PI_2){
-            azimuth+=M_PI;
-            elevation = -1*M_PI-elevation;
-         }
+         azimuth += dx*(0.1f);
+         // if(azimuth>2*M_PI){
+         //    azimuth-=2*M_PI;
+         // } else if(azimuth<0){
+         //    azimuth+=2*M_PI;
+         // }
+         elevation += dy*(0.1f);
+         // if(elevation>M_PI_2){
+         //    azimuth+=M_PI;
+         //    elevation = M_PI-elevation;
+         // } else if(elevation<-1*M_PI_2){
+         //    azimuth+=M_PI;
+         //    elevation = -1*M_PI-elevation;
+         // }
          //update angle?
          // x = radius * sin(azimuth) * cos(elevation)
          // y = radius * sin(elevation)

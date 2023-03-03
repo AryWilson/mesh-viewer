@@ -32,9 +32,7 @@ namespace agl {
    }
 
    PLYMesh::~PLYMesh() {
-      _faces.clear();
-      _positions.clear();
-      _normals.clear();
+      clear();
    }
 
    bool PLYMesh::load(const std::string& filename) {
@@ -126,7 +124,7 @@ namespace agl {
 
    glm::vec3 PLYMesh::minBounds() const {
       GLfloat x,y,z;
-      for(int i = 0; i<_positions.size();){
+      for(int i = 0; i+2<_positions.size();){
          x = std::min(x,_positions[i++]);
          y = std::min(y,_positions[i++]);
          z = std::min(z,_positions[i++]);
@@ -136,7 +134,7 @@ namespace agl {
 
    glm::vec3 PLYMesh::maxBounds() const {
       GLfloat x,y,z;
-      for(int i = 0; i<_positions.size();){
+      for(int i = 0; i+2<_positions.size();){
          x = std::max(x,_positions[i++]);
          y = std::max(y,_positions[i++]);
          z = std::max(z,_positions[i++]);
