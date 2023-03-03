@@ -46,7 +46,7 @@ namespace agl {
       }
       string line;
       getline(file,line);
-      if(!line.compare("ply")){
+      if(line.compare("ply")!=0){
          cerr << "mesh file not ply" << endl;
          file.close();
          return false;
@@ -62,17 +62,21 @@ namespace agl {
       
       while(getline(file,line)){
          if(regex_search(line, matches, re_v)) {
-            nvertices = stoi(matches[0]);
+            // cout << matches[1] << endl;
+            nvertices = stoi(matches[1]);
          }
          if(regex_search(line, matches, re_f)) {
-            nfaces = stoi(matches[0]);
+            // cout << matches[1] << endl;
+            nfaces = stoi(matches[1]);
 
          }
          if(regex_search(line, end_h)) {
+            // cout << line << endl;
+
             break;
          }
       }   
-      init();
+      // init();
       //&_faces, &_positions, &_normals      
       for(int i = 0; i<nvertices;){
 
@@ -84,12 +88,14 @@ namespace agl {
          
          if(regex_search(line, matches, re_vn)) {
             i++;
-            _positions.push_back(stof(matches[0]));
+            // cout << matches[0] << endl;
+
             _positions.push_back(stof(matches[1]));
             _positions.push_back(stof(matches[2]));
-            _normals.push_back(stof(matches[3]));
+            _positions.push_back(stof(matches[3]));
             _normals.push_back(stof(matches[4]));
             _normals.push_back(stof(matches[5]));
+            _normals.push_back(stof(matches[6]));
          }
       }
       for(int i = 0; i<nfaces;){
@@ -99,10 +105,11 @@ namespace agl {
             return false;
          }
          if(regex_search(line, matches, re_fn)) {
+            // cout << matches[0] << endl;
             i++;
-            _faces.push_back(stoi(matches[0]));
             _faces.push_back(stoi(matches[1]));
             _faces.push_back(stoi(matches[2]));
+            _faces.push_back(stoi(matches[3]));
          }
 
       }
