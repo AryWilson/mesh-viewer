@@ -18,18 +18,23 @@ using namespace agl;
 class MeshViewer : public Window {
 public:
    MeshViewer() : Window() {
-      eyePos = vec3(10, 0, 0);
+      eyePos = vec3(7, 0, 0);
       lookPos = vec3(0, 0, 0);
       upDir = vec3(0, 1, 0);
       models = GetFilenamesInDir("../models", "ply");
       currentModel = 0;
-      mesh = PLYMesh("../models/"+models[0]);
+      mesh = PLYMesh("../models/cube.ply");
+
+      // mesh = PLYMesh("../models/shark.ply");
       radius = 10;
       azimuth = 0;
       elevation = 0;
    }
 
    void setup() {
+      // mesh = PLYMesh("../models/shark.ply");
+      // mesh = PLYMesh("../models/"+models[currentModel]);
+
       // mesh.load("../models/cube.ply");
       // mesh.load("../models/shark.ply");
 
