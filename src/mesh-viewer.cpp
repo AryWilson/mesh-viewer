@@ -23,7 +23,7 @@ public:
       upDir = vec3(0, 1, 0);
       models = GetFilenamesInDir("../models", "ply");
       currentModel = 0;
-      mesh = PLYMesh(models[currentModel]);
+      // mesh = PLYMesh("../models/"+models[currentModel]);
       radius = 10;
       azimuth = 0;
       elevation = 0;
@@ -31,7 +31,9 @@ public:
 
    void setup() {
       // mesh.load("../models/cube.ply");
-      mesh.load("../models/"+models[currentModel]);
+      mesh.load("../models/shark.ply");
+
+      // mesh.load("../models/"+models[currentModel]);
 
    }
 
@@ -76,14 +78,14 @@ public:
 
    void draw() {
       float aspect = ((float)width()) / height();
-      renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
+      // renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
 
-      renderer.rotate(vec3(0,0,0));
-      renderer.scale(vec3(1,1,1));
-      renderer.translate(vec3(0,0,0));
-      // mesh.load(models[currentModel]);
-      //renderer.mesh(mesh);
-      renderer.cube(); // for debugging!
+      // renderer.rotate(vec3(0,0,0));
+      // renderer.scale(vec3(1,1,1));
+      // renderer.translate(vec3(0,0,0));
+      // mesh.load("../models/"+models[currentModel]);
+      // renderer.mesh(mesh);
+      // renderer.cube(); // for debugging!
 
       //find bounding box
       vec3 bbMin = mesh.minBounds();
@@ -98,11 +100,16 @@ public:
       float bbZlen = abs(bbMax.z - bbMin.z);
       //scale bounding box to correct size, unit cube? camera at 0,0,0
       renderer.scale(vec3(1.0f/bbXlen, 1.0f/bbYlen, 1.0f/bbZlen));
-      //translate bonuding box to unit cub coords
-      renderer.translate(vec3(.5,.5,.5));
+      //translate bonuding box to unit cub coords?
+      // renderer.translate(vec3(.5,.5,.5));
       //set camera position
-      renderer.lookAt(vec3(0,0,0),lookPos,upDir);
+      renderer.lookAt(eyePos,lookPos,upDir);
       //project
+      renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
+
+      renderer.mesh(mesh);
+      
+
 
 
    }
