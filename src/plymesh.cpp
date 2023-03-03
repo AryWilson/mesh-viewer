@@ -121,20 +121,20 @@ namespace agl {
 
    glm::vec3 PLYMesh::minBounds() const {
       GLfloat x,y,z;
-      for(int i = 0; i<_positions.size(); i=i+3){
-         x = std::min(x,_positions[i+0]);
-         y = std::min(y,_positions[i+1]);
-         z = std::min(z,_positions[i+2]);
+      for(int i = 0; i<_positions.size();){
+         x = std::min(x,_positions[i++]);
+         y = std::min(y,_positions[i++]);
+         z = std::min(z,_positions[i++]);
       }
       return glm::vec3(x,y,z);
    }
 
    glm::vec3 PLYMesh::maxBounds() const {
       GLfloat x,y,z;
-      for(int i = 0; i<_positions.size(); i=i+3){
-         x = std::max(x,_positions[i+0]);
-         y = std::max(y,_positions[i+1]);
-         z = std::max(z,_positions[i+2]);
+      for(int i = 0; i<_positions.size();){
+         x = std::max(x,_positions[i++]);
+         y = std::max(y,_positions[i++]);
+         z = std::max(z,_positions[i++]);
       }
       return glm::vec3(x,y,z);
    }
