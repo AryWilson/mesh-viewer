@@ -45,19 +45,13 @@ public:
    void mouseMotion(int x, int y, int dx, int dy) {
       if (mouseIsDown(GLFW_MOUSE_BUTTON_LEFT)) {
          azimuth += dx*(0.05f);
-         // if(azimuth>2*M_PI){
-         //    azimuth-=2*M_PI;
-         // } else if(azimuth<0){
-         //    azimuth+=2*M_PI;
-         // }
+         azimuth = fmod(azimuth,2*M_PI);
+
          elevation += dy*(0.05f);
-         // if(elevation>M_PI_2){
-         //    azimuth+=M_PI;
-         //    elevation = M_PI-elevation;
-         // } else if(elevation<-1*M_PI_2){
-         //    azimuth+=M_PI;
-         //    elevation = -1*M_PI-elevation;
-         // }
+         elevation += M_PI_2;
+         elevation = fmod(elevation,M_PI);
+         elevation -= M_PI_2;
+
          //update angle?
          // x = radius * sin(azimuth) * cos(elevation)
          // y = radius * sin(elevation)
@@ -170,8 +164,8 @@ protected:
    vector<string> models;
    int currentModel;
    float radius;
-   float azimuth;
-   float elevation;
+   float azimuth; // in [0, 360]
+   float elevation; // in [-90, 90]
 };
 
 int main(int argc, char** argv)
