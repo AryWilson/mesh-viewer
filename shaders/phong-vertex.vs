@@ -9,8 +9,23 @@ uniform mat4 ModelViewMatrix;
 uniform mat4 MVP;
 uniform bool HasUV;
 
+
+struct Material{
+   float kd;
+   float ks;
+   float ka;
+   vec3 col;
+   float alpha;
+};
+
+struct Light{
+   vec3 pos;
+   vec3 col;
+};
+
 uniform Material material;
 uniform Light light;
+uniform vec3 eyePos;
 
 out vec3 col;
 

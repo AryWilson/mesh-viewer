@@ -13,8 +13,10 @@ uniform bool HasUV;
 //inputs: pos, normal, 
 // uniform input (MVP convert to projected), (MV, normal_matrix N, convert to eye coords)
 
-uniform Material material;
-uniform Light light;
+// uniform Material material;
+// uniform Light light;
+uniform vec3 eyePos;
+
 
 out vec3 nEye;
 out vec3 nPos;

@@ -15,8 +15,22 @@ using namespace std;
 using namespace glm;
 using namespace agl;
 
+struct Material{
+   float kd;
+   float ks;
+   float ka;
+   vec3 col;
+   float alpha;
+};
+
+struct Light{
+   vec3 pos;
+   vec3 col;
+};
+
 class MeshViewer : public Window {
 public:
+
    MeshViewer() : Window() {
       eyePos = vec3(7, 0, 0);
       lookPos = vec3(0, 0, 0);
@@ -31,12 +45,18 @@ public:
       radius = 10;
       azimuth = 0;
       elevation = 0;
+
+      material = {0.5f,0.5f,0.5f,vec3(0.4f,0.4f,0.8f),10.0f};
+      light = {upDir,vec3(1.0f,1.0f,1.0f)};
    }
 
    void setup() {
       renderer.loadShader(shaders[0], "../shaders/normals.vs", "../shaders/normals.fs");
       renderer.loadShader(shaders[1], "../shaders/phong-vertex.vs", "../shaders/phong-vertex.fs");
       renderer.loadShader(shaders[2], "../shaders/phong-pixel.vs", "../shaders/phong-pixel.fs");
+
+
+
       // mesh = PLYMesh("../models/shark.ply");
       // mesh = PLYMesh("../models/"+models[currentModel]);
 
@@ -122,22 +142,24 @@ public:
 // loockAt(vec3(0,0,0),lookPos,upDir);
 
 //load in mesh
-struct Material{
-   float kd;
-   float ks;
-   float ka;
-   vec3 col;
-   float alpha;
-};
 
-struct Light{
-   vec3 pos;
-   vec3 col;
-};
 
 
    void draw() {
       update();
+      renderer.beginShader(shaders[currentShader]); // activates shader with given name
+      renderer.setUniform("ViewMatrix", renderer.viewMatrix());
+      renderer.setUniform("ProjMatrix", renderer.projectionMatrix());
+      renderer.setUniform("eyePos", eyePos);
+      renderer.setUniform("material.kd", material.kd);
+      renderer.setUniform("material.ks", material.ks);
+      renderer.setUniform("material.ka", material.ka);
+      renderer.setUniform("material.col", material.col);
+      renderer.setUniform("material.alpha", material.alpha);
+      renderer.setUniform("light.pos", light.pos);
+      renderer.setUniform("light.col", light.col);
+
+
       float aspect = ((float)width()) / height();
       // renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
 
@@ -170,8 +192,6 @@ struct Light{
 
       // renderer.mesh(mesh);
 
-      renderer.beginShader(shaders[currentShader]); // activates shader with given name
-      // renderer.setUniform("time",elapsedTime);
       
       renderer.mesh(mesh);
 
@@ -195,6 +215,8 @@ protected:
    float radius;
    float azimuth; // in [0, 360]
    float elevation; // in [-90, 90]
+   Material material;
+   Light light;
 
 };
 
