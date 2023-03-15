@@ -24,6 +24,7 @@ namespace agl {
    }
 
    PLYMesh::PLYMesh() {
+      
    }
 
    void PLYMesh::init() {

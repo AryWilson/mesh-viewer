@@ -23,6 +23,8 @@ public:
       upDir = vec3(0, 1, 0);
       models = GetFilenamesInDir("../models", "ply");
       currentModel = 0;
+      shaders = {"normals","phong-vertex","phong-pixel"};
+      currentShader = 0;
       mesh = PLYMesh("../models/cube.ply");
 
       // mesh = PLYMesh("../models/shark.ply");
@@ -32,6 +34,9 @@ public:
    }
 
    void setup() {
+      renderer.loadShader(shaders[0], "../shaders/normals.vs", "../shaders/normals.fs");
+      renderer.loadShader(shaders[1], "../shaders/phong-vertex.vs", "../shaders/phong-vertex.fs");
+      renderer.loadShader(shaders[2], "../shaders/phong-pixel.vs", "../shaders/phong-pixel.fs");
       // mesh = PLYMesh("../models/shark.ply");
       // mesh = PLYMesh("../models/"+models[currentModel]);
 
@@ -82,11 +87,14 @@ public:
          cout<< mesh.minBounds()<<endl;
          cout<< mesh.maxBounds()<<endl;
 
-      } else if (key == 80|| key == 112){
+      } else if (key == 80 || key == 112){
          currentModel= (currentModel-1)% (models.size());
          mesh.clear();
          mesh = PLYMesh("../models/"+models[currentModel]);
          cout << models[currentModel]<< endl;
+
+      }  else if (key == 83 || key == 115){
+         currentShader = ((currentShader + 1) % shaders.size());
 
       } else if (GLFW_KEY_UP){
          scroll(1,1);
@@ -114,7 +122,18 @@ public:
 // loockAt(vec3(0,0,0),lookPos,upDir);
 
 //load in mesh
+struct Material{
+   float kd;
+   float ks;
+   float ka;
+   vec3 col;
+   float alpha;
+};
 
+struct Light{
+   vec3 pos;
+   vec3 col;
+};
 
 
    void draw() {
@@ -149,7 +168,15 @@ public:
       //project
       renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
 
+      // renderer.mesh(mesh);
+
+      renderer.beginShader(shaders[currentShader]); // activates shader with given name
+      // renderer.setUniform("time",elapsedTime);
+      
       renderer.mesh(mesh);
+
+      // all primitives draw here will use the current shader
+      renderer.endShader();
       
 
 
@@ -163,9 +190,12 @@ protected:
    vec3 upDir;
    vector<string> models;
    int currentModel;
+   vector<string> shaders;
+   int currentShader;
    float radius;
    float azimuth; // in [0, 360]
    float elevation; // in [-90, 90]
+
 };
 
 int main(int argc, char** argv)

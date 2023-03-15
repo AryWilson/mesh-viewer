@@ -9,7 +9,32 @@ uniform mat4 ModelViewMatrix;
 uniform mat4 MVP;
 uniform bool HasUV;
 
+uniform Material material;
+uniform Light light;
+
+out vec3 col;
+
 void main()
 {
-   gl_Position = MVP * vec4(vPos, 1.0);
+   // get pos and normal in eye space
+   vec3 nEye = normalize(NormalMatrix * vNormal);
+   vec3 pEye = ModelViewMatrix * vec4(vPos,1.0f);
+
+   // v is eyepos - current vertex
+   // L is lightposition - eyeposition, normalized
+   vec3 L = normalize(light.pos + -1*pEye);
+   vec3 r = 2*(dot(L,nEye))*nEye-L;
+   vec3 s = normalize(vec3(light.pos + -1*pEye));
+   vec3 v = normalize(-1*pEye);
+
+
+   // ambient
+   vec3 ia = material.ka * light.col;
+   // diffuse
+   vec3 id = material.kd * max((dot(L,nEye)),0) * light.col * material.col;
+   // specular
+   vec3 is = material.ks * light.col *pow(max((dot(v,r)),0),material.alpha)
+   col = vec3(ia+id+is);
+
+   gl_Position = MVP * vec4(vPos, 1.0f);
 }

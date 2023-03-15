@@ -1,8 +1,41 @@
 #version 400
 
+layout (location = 0) in vec3 vPos;
+layout (location = 1) in vec3 vNormals;
+layout (location = 2) in vec2 vTextureCoords;
+
+uniform mat3 NormalMatrix;
+uniform mat4 ModelViewMatrix;
+uniform mat4 MVP;
+uniform bool HasUV;
+
+uniform Material material;
+uniform Light light;
+
+in vec3 nEye;
+in vec3 pEye;
 out vec4 FragColor;
 
 void main()
 {
-   FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+
+
+   // v is eyepos - current vertex
+   // L is lightposition - eyeposition, normalized
+   vec3 L = normalize(light.pos + -1*pEye);
+   vec3 r = 2*(dot(L,nEye))*nEye-L;
+   vec3 s = normalize(vec3(light.pos + -1*pEye));
+   vec3 v = normalize(-1*pEye);
+
+
+   // ambient
+   vec3 ia = material.ka * light.col;
+   // diffuse
+   vec3 id = material.kd * max((dot(L,nEye)),0) * light.col * material.col;
+   // specular
+   vec3 is = material.ks * light.col *pow(max((dot(v,r)),0),material.alpha)
+   vec3 col = vec3(ia+id+is);
+
+   FragColor = vec4(col, 1.0f);
+
 }

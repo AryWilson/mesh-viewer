@@ -9,7 +9,22 @@ uniform mat4 ModelViewMatrix;
 uniform mat4 MVP;
 uniform bool HasUV;
 
+
+//inputs: pos, normal, 
+// uniform input (MVP convert to projected), (MV, normal_matrix N, convert to eye coords)
+
+uniform Material material;
+uniform Light light;
+
+out vec3 nEye;
+out vec3 nPos;
+
 void main()
 {
+   // get pos and normal in eye space
+   nEye = normalize(NormalMatrix * vNormal);
+   pEye = ModelViewMatrix * vec4(vPos,1.0f);
    gl_Position = MVP * vec4(vPos, 1.0);
+
+
 }
