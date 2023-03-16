@@ -37,12 +37,10 @@ public:
       upDir = vec3(0, 1, 0);
       models = GetFilenamesInDir("../models", "ply");
       currentModel = 0;
-      // shaders = {"normals","phong-vertex","phong-pixel"};
-      shaders = {"normals"};
+      shaders = {"normals","phong-vertex","phong-pixel"};
       currentShader = 0;
       mesh = PLYMesh("../models/cube.ply");
 
-      // mesh = PLYMesh("../models/shark.ply");
       radius = 10;
       azimuth = 0;
       elevation = 0;
@@ -53,8 +51,8 @@ public:
 
    void setup() {
       renderer.loadShader(shaders[0], "../shaders/normals.vs", "../shaders/normals.fs");
-      // renderer.loadShader(shaders[1], "../shaders/phong-vertex.vs", "../shaders/phong-vertex.fs");
-      // renderer.loadShader(shaders[2], "../shaders/phong-pixel.vs", "../shaders/phong-pixel.fs");
+      renderer.loadShader(shaders[1], "../shaders/phong-vertex.vs", "../shaders/phong-vertex.fs");
+      renderer.loadShader(shaders[2], "../shaders/phong-pixel.vs", "../shaders/phong-pixel.fs");
 
    }
 

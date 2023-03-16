@@ -47,7 +47,7 @@ void main()
    // diffuse
    vec3 id = material.kd * max((dot(L,nEye)),0) * light.col * material.col;
    // specular
-   vec3 is = material.ks * light.col *pow(max((dot(v,r)),0),material.alpha)
+   vec3 is = material.ks * light.col *pow(max((dot(v,r)),0),material.alpha);
    vec3 col = vec3(ia+id+is);
 
    FragColor = vec4(col, 1.0f);

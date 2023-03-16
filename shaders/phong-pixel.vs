@@ -19,13 +19,13 @@ uniform vec3 eyePos;
 
 
 out vec3 nEye;
-out vec3 nPos;
+out vec3 pEye;
 
 void main()
 {
    // get pos and normal in eye space
-   nEye = normalize(NormalMatrix * vNormal);
-   pEye = ModelViewMatrix * vec4(vPos,1.0f);
+   nEye = normalize(NormalMatrix * vNormals);
+   pEye = (ModelViewMatrix * vec4(vPos,1.0f)).xyz;
    gl_Position = MVP * vec4(vPos, 1.0);
 
 
