@@ -21,6 +21,4 @@ void main()
    float ny = (vNormal.y + 1)/2.0f;
    float nz = (vNormal.z + 1)/2.0f;
    normCol = vec3(nx,ny,nz);
-
-
 }

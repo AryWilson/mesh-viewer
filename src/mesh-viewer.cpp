@@ -37,7 +37,8 @@ public:
       upDir = vec3(0, 1, 0);
       models = GetFilenamesInDir("../models", "ply");
       currentModel = 0;
-      shaders = {"normals","phong-vertex","phong-pixel"};
+      // shaders = {"normals","phong-vertex","phong-pixel"};
+      shaders = {"normals"};
       currentShader = 0;
       mesh = PLYMesh("../models/cube.ply");
 
@@ -52,18 +53,8 @@ public:
 
    void setup() {
       renderer.loadShader(shaders[0], "../shaders/normals.vs", "../shaders/normals.fs");
-      renderer.loadShader(shaders[1], "../shaders/phong-vertex.vs", "../shaders/phong-vertex.fs");
-      renderer.loadShader(shaders[2], "../shaders/phong-pixel.vs", "../shaders/phong-pixel.fs");
-
-
-
-      // mesh = PLYMesh("../models/shark.ply");
-      // mesh = PLYMesh("../models/"+models[currentModel]);
-
-      // mesh.load("../models/cube.ply");
-      // mesh.load("../models/shark.ply");
-
-      // mesh.load("../models/"+models[currentModel]);
+      // renderer.loadShader(shaders[1], "../shaders/phong-vertex.vs", "../shaders/phong-vertex.fs");
+      // renderer.loadShader(shaders[2], "../shaders/phong-pixel.vs", "../shaders/phong-pixel.fs");
 
    }
 
@@ -147,18 +138,8 @@ public:
 
    void draw() {
       update();
-      renderer.beginShader(shaders[currentShader]); // activates shader with given name
-      renderer.setUniform("ViewMatrix", renderer.viewMatrix());
-      renderer.setUniform("ProjMatrix", renderer.projectionMatrix());
-      renderer.setUniform("eyePos", eyePos);
-      renderer.setUniform("material.kd", material.kd);
-      renderer.setUniform("material.ks", material.ks);
-      renderer.setUniform("material.ka", material.ka);
-      renderer.setUniform("material.col", material.col);
-      renderer.setUniform("material.alpha", material.alpha);
-      renderer.setUniform("light.pos", light.pos);
-      renderer.setUniform("light.col", light.col);
 
+      renderer.beginShader(shaders[currentShader]); // activates shader with given name
 
       float aspect = ((float)width()) / height();
       // renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
@@ -195,11 +176,20 @@ public:
       
       renderer.mesh(mesh);
 
+      
+      renderer.setUniform("ViewMatrix", renderer.viewMatrix());
+      renderer.setUniform("ProjMatrix", renderer.projectionMatrix());
+      renderer.setUniform("eyePos", eyePos);
+      renderer.setUniform("material.kd", material.kd);
+      renderer.setUniform("material.ks", material.ks);
+      renderer.setUniform("material.ka", material.ka);
+      renderer.setUniform("material.col", material.col);
+      renderer.setUniform("material.alpha", material.alpha);
+      renderer.setUniform("light.pos", light.pos);
+      renderer.setUniform("light.col", light.col);
+
       // all primitives draw here will use the current shader
       renderer.endShader();
-      
-
-
 
    }
 
