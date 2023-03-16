@@ -16,9 +16,9 @@ using namespace glm;
 using namespace agl;
 
 struct Material{
+   float ka;
    float kd;
    float ks;
-   float ka;
    vec3 col;
    float alpha;
 };
@@ -45,7 +45,7 @@ public:
       azimuth = 0;
       elevation = 0;
 
-      material = {0.5f,0.5f,0.5f,vec3(0.4f,0.4f,0.8f),10.0f};
+      material = {0.2f,0.8f,0.5f,vec3(0.4f,0.4f,0.8f),10.0f};
       light = {upDir,vec3(1.0f,1.0f,1.0f)};
    }
 
@@ -58,13 +58,16 @@ public:
 
    void mouseMotion(int x, int y, int dx, int dy) {
       if (mouseIsDown(GLFW_MOUSE_BUTTON_LEFT)) {
-         azimuth += dx*(0.05f);
+         azimuth += dx*(0.02f);
          azimuth = fmod(azimuth,2*M_PI);
 
-         elevation += dy*(0.05f);
-         elevation += M_PI_2;
-         elevation = fmod(elevation,M_PI);
-         elevation -= M_PI_2;
+         elevation += dy*(0.02f);
+         // elevation += M_PI_2;
+         // elevation = fmod(elevation,M_PI);
+         // elevation -= M_PI_2;
+
+         if(elevation>=M_PI_2){elevation = M_PI_2 - 0.01f;}
+         if(elevation<=-1*M_PI_2){elevation = -1*M_PI_2 + 0.01f;}
 
          //update angle?
          // x = radius * sin(azimuth) * cos(elevation)
@@ -89,18 +92,18 @@ public:
    void keyUp(int key, int mods) {
 
       if (key == 78 || key == 110){
-         currentModel= (currentModel+1)% (models.size());
+         currentModel= (currentModel+1) % (models.size());
          mesh.clear();
          mesh = PLYMesh("../models/"+models[currentModel]);
-         cout << models[currentModel]<< endl;
-         cout<< mesh.minBounds()<<endl;
-         cout<< mesh.maxBounds()<<endl;
+         // cout << models[currentModel]<< endl;
+         // cout<< mesh.minBounds()<<endl;
+         // cout<< mesh.maxBounds()<<endl;
 
       } else if (key == 80 || key == 112){
-         currentModel= (currentModel-1)% (models.size());
+         currentModel= (currentModel-1) % (models.size());
          mesh.clear();
          mesh = PLYMesh("../models/"+models[currentModel]);
-         cout << models[currentModel]<< endl;
+         // cout << models[currentModel]<< endl;
 
       }  else if (key == 83 || key == 115){
          currentShader = ((currentShader + 1) % shaders.size());
@@ -117,6 +120,7 @@ public:
    }
 
    void update(){
+
       float x = radius * sin(azimuth) * cos(elevation);
       float y = radius * sin(elevation);
       float z = radius * cos(azimuth) * cos(elevation);
@@ -156,12 +160,15 @@ public:
       float bbCenty = (bbMin.y + bbMax.y)/2.0f;
       float bbCentz = (bbMin.z + bbMax.z)/2.0f;
       //translate bounding box to 0,0,0
-      renderer.translate(vec3(-1*bbCentx,-1*bbCenty,-1*bbCentz));
+      // renderer.translate(vec3(-1*bbCentx,-1*bbCenty,-1*bbCentz));
       float bbXlen = abs(bbMax.x - bbMin.x);
       float bbYlen = abs(bbMax.y - bbMin.y);
       float bbZlen = abs(bbMax.z - bbMin.z);
+      float d = std::max(bbXlen,std::max(bbYlen,bbZlen));
       //scale bounding box to correct size, unit cube? camera at 0,0,0
-      renderer.scale(vec3(1.0f/bbXlen, 1.0f/bbYlen, 1.0f/bbZlen));
+      renderer.scale(vec3(1.0f/d, 1.0f/d, 1.0f/d));
+      renderer.translate(vec3(-1*bbCentx,-1*bbCenty,-1*bbCentz));
+
       //translate bonuding box to unit cub coords?
       // renderer.translate(vec3(.5,.5,.5));
       //set camera position

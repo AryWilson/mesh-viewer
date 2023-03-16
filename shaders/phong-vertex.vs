@@ -25,7 +25,6 @@ struct Light{
 
 uniform Material material;
 uniform Light light;
-uniform vec3 eyePos;
 
 out vec3 col;
 
