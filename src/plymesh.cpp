@@ -1,6 +1,6 @@
 //--------------------------------------------------
-// Author:
-// Date:
+// Author: Ary Wilson
+// Date: 2/18/23
 // Description: Loads PLY files in ASCII format
 //--------------------------------------------------
 #include <string>

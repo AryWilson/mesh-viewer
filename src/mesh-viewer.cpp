@@ -1,6 +1,6 @@
 //--------------------------------------------------
-// Author:
-// Date:
+// Author: Ary Wilson
+// Date: 2/18/23
 // Description: Loads PLY files in ASCII format
 //--------------------------------------------------
 #define _USE_MATH_DEFINES
@@ -37,22 +37,26 @@ public:
       upDir = vec3(0, 1, 0);
       models = GetFilenamesInDir("../models", "ply");
       currentModel = 0;
-      shaders = {"normals","phong-vertex","phong-pixel"};
+      shaders = {"normals","phong-vertex","phong-pixel", "toon"};
       currentShader = 0;
       mesh = PLYMesh("../models/cube.ply");
 
       radius = 10;
       azimuth = 0;
       elevation = 0;
-
+      lRadius= 1;
+      lElevation = 0;
+      lAzimuth = 0;
+      lightPos = upDir;
       material = {0.2f,0.8f,0.5f,vec3(0.4f,0.4f,0.8f),10.0f};
-      light = {upDir,vec3(1.0f,1.0f,1.0f)};
+      light = {lightPos,vec3(1.0f,1.0f,1.0f)};
    }
 
    void setup() {
       renderer.loadShader(shaders[0], "../shaders/normals.vs", "../shaders/normals.fs");
       renderer.loadShader(shaders[1], "../shaders/phong-vertex.vs", "../shaders/phong-vertex.fs");
       renderer.loadShader(shaders[2], "../shaders/phong-pixel.vs", "../shaders/phong-pixel.fs");
+      renderer.loadShader(shaders[3], "../shaders/toon.vs", "../shaders/toon.fs");
 
    }
 
@@ -109,10 +113,22 @@ public:
          currentShader = ((currentShader + 1) % shaders.size());
 
       } else if (GLFW_KEY_UP){
-         scroll(1,1);
+         lRadius += 0.1f;
+         if(lRadius > 10){
+            lRadius = 10;
+         }
       }
       else if (GLFW_KEY_DOWN){
-         scroll(-1,-1);
+         lRadius -= 0.1f;
+         if(lRadius < 1){
+            lRadius = 1;
+         }
+      } 
+      else if (GLFW_KEY_RIGHT){
+         lAzimuth += 0.01f;
+      }
+      else if (GLFW_KEY_LEFT){
+         lElevation += 0.01f;
       }
       // mesh.load("../models/"+models[currentModel]);
 
@@ -125,6 +141,11 @@ public:
       float y = radius * sin(elevation);
       float z = radius * cos(azimuth) * cos(elevation);
       eyePos = vec3(x,y,z);
+
+      x = lRadius * sin(lAzimuth) * cos(lElevation);
+      y = lRadius * sin(lElevation);
+      z = lRadius * cos(lAzimuth) * cos(lElevation);
+      lightPos = vec3(x,y,z);
 
    }
 
@@ -190,7 +211,7 @@ public:
       renderer.setUniform("material.ka", material.ka);
       renderer.setUniform("material.col", material.col);
       renderer.setUniform("material.alpha", material.alpha);
-      renderer.setUniform("light.pos", light.pos);
+      renderer.setUniform("light.pos", lightPos);
       renderer.setUniform("light.col", light.col);
 
       // all primitives draw here will use the current shader
@@ -203,6 +224,7 @@ protected:
    vec3 eyePos;
    vec3 lookPos;
    vec3 upDir;
+   vec3 lightPos;
    vector<string> models;
    int currentModel;
    vector<string> shaders;
@@ -212,6 +234,9 @@ protected:
    float elevation; // in [-90, 90]
    Material material;
    Light light;
+   float lRadius;
+   float lElevation;
+   float lAzimuth;
 
 };
 
