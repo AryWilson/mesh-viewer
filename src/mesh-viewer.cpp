@@ -38,7 +38,7 @@ public:
       upDir = vec3(0, 1, 0);
       models = GetFilenamesInDir("../models", "ply");
       currentModel = 0;
-      shaders = {"normals","phong-vertex","phong-pixel", "toon"};
+      shaders = {"normals","phong-vertex","phong-pixel", "toon", "blue"};
       currentShader = 0;
       mesh = PLYMesh("../models/cube.ply");
 
@@ -58,6 +58,7 @@ public:
       renderer.loadShader(shaders[1], "../shaders/phong-vertex.vs", "../shaders/phong-vertex.fs");
       renderer.loadShader(shaders[2], "../shaders/phong-pixel.vs", "../shaders/phong-pixel.fs");
       renderer.loadShader(shaders[3], "../shaders/toon.vs", "../shaders/toon.fs");
+      renderer.loadShader(shaders[4], "../shaders/blue.vs", "../shaders/blue.fs");
 
    }
 
