@@ -62,7 +62,7 @@ public:
 
    void mouseMotion(int x, int y, int dx, int dy) {
       if (mouseIsDown(GLFW_MOUSE_BUTTON_LEFT)) {
-         azimuth += dx*(0.02f);
+         azimuth -= dx*(0.02f);
          azimuth = fmod(azimuth,2*M_PI);
 
          elevation += dy*(0.02f);
@@ -77,7 +77,7 @@ public:
          // x = radius * sin(azimuth) * cos(elevation)
          // y = radius * sin(elevation)
          // z = radius * cos(azimuth) * cos(elevation)
-      }
+      } 
    }
 
    void mouseDown(int button, int mods) {
@@ -111,25 +111,16 @@ public:
 
       }  else if (key == 83 || key == 115){
          currentShader = ((currentShader + 1) % shaders.size());
+      } else if (key == GLFW_KEY_RIGHT){
+         lAzimuth += 0.5f;
+      } else if (key == GLFW_KEY_LEFT){
+         lAzimuth -= 0.5f;
+      } else if (key == GLFW_KEY_UP) {
+         lElevation += 0.5f;
+      }else if (key == GLFW_KEY_DOWN) {
+         lElevation -= 0.5f;
+      }
 
-      } else if (GLFW_KEY_UP){
-         lRadius += 0.1f;
-         if(lRadius > 10){
-            lRadius = 10;
-         }
-      }
-      else if (GLFW_KEY_DOWN){
-         lRadius -= 0.1f;
-         if(lRadius < 1){
-            lRadius = 1;
-         }
-      } 
-      else if (GLFW_KEY_RIGHT){
-         lAzimuth += 0.01f;
-      }
-      else if (GLFW_KEY_LEFT){
-         lElevation += 0.01f;
-      }
       // mesh.load("../models/"+models[currentModel]);
 
 
@@ -142,9 +133,9 @@ public:
       float z = radius * cos(azimuth) * cos(elevation);
       eyePos = vec3(x,y,z);
 
-      x = lRadius * sin(lAzimuth) * cos(lElevation);
-      y = lRadius * sin(lElevation);
-      z = lRadius * cos(lAzimuth) * cos(lElevation);
+      x = radius * sin(lAzimuth) * cos(lElevation);
+      y = radius * sin(lElevation);
+      z = radius * cos(lAzimuth) * cos(lElevation);
       lightPos = vec3(x,y,z);
 
    }

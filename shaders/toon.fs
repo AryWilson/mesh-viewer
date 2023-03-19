@@ -1,11 +1,5 @@
 #version 400
 
-#version 400
-
-layout (location = 0) in vec3 vPos;
-layout (location = 1) in vec3 vNormals;
-layout (location = 2) in vec2 vTextureCoords;
-
 uniform mat3 NormalMatrix;
 uniform mat4 ModelViewMatrix;
 uniform mat4 MVP;
@@ -39,12 +33,10 @@ out vec4 FragColor;
 void main()
 {
     vec3 s = normalize(light.pos - pEye); // vPos
-    float cosine = max(0.0, dot(s, nEye)); // vNormals
-    if(cosine < 0.05){
-        FragColor = {1.0,0.0,0.0,1.0};
-    } else {
-        vec3 diffuse = material.kd * floor(cosine * levels) * (scale);
-        FragColor = {Light.intensity * (material.ka + diffuse),1.0f};
-    }
+    float cos = max(0.0, dot(s, nEye)); // vNormals
+    float t = material.kd;
+    vec3 d = material.col* floor(cos * levels) * (sf);
+    FragColor = vec4(light.col * (material.ka + d),1.0);
+
 }
 
