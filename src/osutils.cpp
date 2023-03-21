@@ -60,6 +60,8 @@ std::vector<std::string> GetFilenamesInDir(const std::string& dirname,
 			     files.push_back(ent->d_name);
          } 
   		}
+      closedir(dir); // i added
+
 	}
 	return files;
 }
@@ -114,6 +116,7 @@ std::vector<std::string> GetFilenamesInDir(const std::string& dirname, const std
 			     files.push_back(ent->d_name);
          } 
   		}
+      closedir(dir); // i added
 	}
 	return files;
 }

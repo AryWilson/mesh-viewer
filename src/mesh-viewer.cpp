@@ -64,6 +64,12 @@ public:
       // renderer.loadShader(shaders[2], "../shaders/phong-pixel.vs", "../shaders/phong-pixel.fs");
       // renderer.loadShader(shaders[3], "../shaders/toon.vs", "../shaders/toon.fs");
       // renderer.loadShader(shaders[4], "../shaders/blue.vs", "../shaders/blue.fs");
+      // rendere.loadTexture("bricks","textures/bricks.png",0);
+
+      // in vertex shader
+      // vec3 c - color * texture(diffuseTexture,uv,1.0);
+      // ouput from vertext shader texture vec2 coord
+
 
    }
 
@@ -163,6 +169,7 @@ public:
       update();
 
       renderer.beginShader(shaders[currentShader]); // activates shader with given name
+      // renderer.textureI"diffuseTexture","bricks");
 
       float aspect = ((float)width()) / height();
       // renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
@@ -242,8 +249,15 @@ protected:
 
 };
 
+void fnExit(){
+   cout << "hi" <<endl;
+   // closedir();
+
+}
+
 int main(int argc, char** argv)
 {
+   atexit (fnExit);
    MeshViewer viewer;
    viewer.run();
    return 0;
