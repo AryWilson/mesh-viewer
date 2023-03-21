@@ -44,8 +44,21 @@ mesh-viewer/build $ ../bin/mesh-viewer
 
 ## Demo of basic features
 
-TODO: Document the core features of your viewer (shaders + models)
+The viewing position can be roated by left-clicking and dragging the mouse aroudn the model.
+(gif)
+The distance from the model can be increased and decreaed via the mouse scroll.
+(gif)
+This viewer has many models that can be cycled through by pressing the 'n' key. The previous model can be accessed by pressing the 'p' key.
+(gif)
+This veiwer has a 5 shaders that can be cycled through by pressing the 's' key. The normal shader, a vertex phong shader, a pixel phong shader, a cortoon shader, and a blue gradient shader.
+(gif)
+The position of the light can be altered by pressing the arrow keys.
+(gif)
 
 ## Unique features 
 
-TODO: Show the unique features you made
+Blue shader (gif)
+Toon shader (gif)
+Moving the light source (gif)
+<!-- Cycle through material colors (gif) -->
+<!-- Cycle through light colors (gif) -->

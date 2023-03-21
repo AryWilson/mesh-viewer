@@ -48,9 +48,10 @@ public:
       lRadius= 1;
       lElevation = 0;
       lAzimuth = 0;
-      lightPos = upDir;
       material = {0.2f,0.8f,0.5f,vec3(0.4f,0.4f,0.8f),10.0f};
-      light = {lightPos,vec3(1.0f,1.0f,1.0f)};
+      light = {upDir,vec3(1.0f,1.0f,1.0f)};
+      colors = {vec3(0.4f,0.4f,0.8f),vec3(0.8f,0.4f,0.4f),vec3(0.3f,0.8,0.3f),vec3(.9,0,.9)};
+      colIndx = 0;
    }
 
    void setup() {
@@ -113,7 +114,9 @@ public:
 
       }  else if (key == 83 || key == 115){
          currentShader = ((currentShader + 1) % shaders.size());
-      } else if (key == GLFW_KEY_RIGHT){
+      } else if (key == 77 || key == 109){
+         material.col = colors[colIndx++];
+      }else if (key == GLFW_KEY_RIGHT){
          lAzimuth += 0.5f;
       } else if (key == GLFW_KEY_LEFT){
          lAzimuth -= 0.5f;
@@ -121,7 +124,7 @@ public:
          lElevation += 0.5f;
       }else if (key == GLFW_KEY_DOWN) {
          lElevation -= 0.5f;
-      }
+      } 
 
       // mesh.load("../models/"+models[currentModel]);
 
@@ -138,8 +141,7 @@ public:
       x = radius * sin(lAzimuth) * cos(lElevation);
       y = radius * sin(lElevation);
       z = radius * cos(lAzimuth) * cos(lElevation);
-      lightPos = vec3(x,y,z);
-
+      light.pos = vec3(x,y,z);
    }
 
 // lookAt() changes the camera position and orientation
@@ -204,7 +206,7 @@ public:
       renderer.setUniform("material.ka", material.ka);
       renderer.setUniform("material.col", material.col);
       renderer.setUniform("material.alpha", material.alpha);
-      renderer.setUniform("light.pos", lightPos);
+      renderer.setUniform("light.pos", light.pos);
       renderer.setUniform("light.col", light.col);
 
       // all primitives draw here will use the current shader
@@ -217,7 +219,6 @@ protected:
    vec3 eyePos;
    vec3 lookPos;
    vec3 upDir;
-   vec3 lightPos;
    vector<string> models;
    int currentModel;
    vector<string> shaders;
@@ -230,6 +231,9 @@ protected:
    float lRadius;
    float lElevation;
    float lAzimuth;
+   vector<vec3> colors;
+   int colIndx;
+
 
 };
 
