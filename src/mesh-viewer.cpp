@@ -50,16 +50,21 @@ public:
       lAzimuth = 0;
       material = {0.2f,0.8f,0.5f,vec3(0.4f,0.4f,0.8f),10.0f};
       light = {upDir,vec3(1.0f,1.0f,1.0f)};
-      colors = {vec3(0.4f,0.4f,0.8f),vec3(0.8f,0.4f,0.4f),vec3(0.3f,0.8,0.3f),vec3(.9,0,.9)};
+      colors = {vec3(0.4f,0.4f,0.8f),vec3(0.8f,0.05f,0.1f),vec3(0.9f,0.4f,0.1f),vec3(0.3f,0.7,0.3f),vec3(0.1f,0.1f,0.9f),vec3(.8,0,.8)};
       colIndx = 0;
+      pallette= {vec3(0.4f,0.4f,0.8f),vec3(0.8f,0.05f,0.1f),vec3(0.9f,0.4f,0.1f),vec3(0.3f,0.7,0.3f),vec3(0.1f,0.1f,0.9f),vec3(.8,0,.8)};
+      palIndx = 0;
    }
 
    void setup() {
-      renderer.loadShader(shaders[0], "../shaders/normals.vs", "../shaders/normals.fs");
-      renderer.loadShader(shaders[1], "../shaders/phong-vertex.vs", "../shaders/phong-vertex.fs");
-      renderer.loadShader(shaders[2], "../shaders/phong-pixel.vs", "../shaders/phong-pixel.fs");
-      renderer.loadShader(shaders[3], "../shaders/toon.vs", "../shaders/toon.fs");
-      renderer.loadShader(shaders[4], "../shaders/blue.vs", "../shaders/blue.fs");
+      for(string s : shaders){
+         renderer.loadShader(s, "../shaders/"+s+".vs", "../shaders/"+s+".fs");
+      }
+      // renderer.loadShader(shaders[0], "../shaders/normals.vs", "../shaders/normals.fs");
+      // renderer.loadShader(shaders[1], "../shaders/phong-vertex.vs", "../shaders/phong-vertex.fs");
+      // renderer.loadShader(shaders[2], "../shaders/phong-pixel.vs", "../shaders/phong-pixel.fs");
+      // renderer.loadShader(shaders[3], "../shaders/toon.vs", "../shaders/toon.fs");
+      // renderer.loadShader(shaders[4], "../shaders/blue.vs", "../shaders/blue.fs");
 
    }
 
@@ -115,7 +120,7 @@ public:
       }  else if (key == 83 || key == 115){
          currentShader = ((currentShader + 1) % shaders.size());
       } else if (key == 77 || key == 109){
-         material.col = colors[colIndx++];
+         material.col = colors[(++colIndx) % (colors.size())];
       }else if (key == GLFW_KEY_RIGHT){
          lAzimuth += 0.5f;
       } else if (key == GLFW_KEY_LEFT){
@@ -233,6 +238,8 @@ protected:
    float lAzimuth;
    vector<vec3> colors;
    int colIndx;
+   vector<vec3> pallette[4];
+   int palIndx;
 
 
 };

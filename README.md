@@ -60,5 +60,5 @@ The position of the light can be altered by pressing the arrow keys.
 Blue shader (gif)
 Toon shader (gif)
 Moving the light source (gif)
-<!-- Cycle through material colors (gif) -->
+Cycle through material colors (gif)
 <!-- Cycle through light colors (gif) -->

@@ -24,24 +24,27 @@ in vec3 pEye;
 uniform Material material;
 uniform Light light;
 
-const int levels = 5;
-const float sf = 1.0f/levels;
-vector<vec3> blue = {vec3(1,1,1),vec3(1,1,0),vec3(0,1,0),vec3(0,0.8,0.8),vec3(0,0,0.5), vec3(0,0,0)};
+const int levels = 3;
+vec3 thermal[levels+1] = vec3[](vec3(0.0,0.0,0.4),vec3(0.5,0.0,0.5),vec3(0.9,0.0,0.0),vec3(1.0,1.0,0.0));
+// vec3 pyche[levels+1] = vec3[](vec3(0.0,0.0,0.5),vec3(1.0,1.0,1.0),vec3(0.6,0.0,0.6),vec3(1.0,1.0,1.0));
+// vec3 thermal[levels+1] = vec3[](vec3(1.0,1.0,1.0),vec3(0.1,0.8,0.1),vec3(0.1,0.2,0.8),vec3(0.3,0.0,0.3));
+// vec3 blue[levels+1] = vec3[](vec3(0.0,0.0,0.5),vec3(0.0,0.8,0.8),vec3(0.0,1.0,0.0),vec3(1.0,1.0,0.0));
+
 
 
 out vec4 FragColor;
 
 void main()
 {
+
     vec3 s = normalize(light.pos - pEye); // vPos
     float cos = max(0.0, dot(s, nEye)); // vNormals
     // FragColor = vec4(blue[floor(cos*levels)], 1.0);
-
-    int i = fmod(cos,1);
-    int j = 1-i;
+    float i = cos*levels - floor(cos*levels);
+    float j = 1-i;
     
-    vec3 a = blue[floor(cos*levels)];
-    vec3 b = blue[ceil(cos*levels)];1.1
+    vec3 a = thermal[ int(floor(cos*levels))];
+    vec3 b = thermal[ int(ceil(cos*levels))];
 
     FragColor = vec4(j*a+i*b, 1.0);
 
