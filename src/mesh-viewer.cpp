@@ -52,7 +52,11 @@ public:
       light = {upDir,vec3(1.0f,1.0f,1.0f)};
       colors = {vec3(0.4f,0.4f,0.8f),vec3(0.8f,0.05f,0.1f),vec3(0.9f,0.4f,0.1f),vec3(0.3f,0.7,0.3f),vec3(0.1f,0.1f,0.9f),vec3(.8,0,.8)};
       colIndx = 0;
-      pallette= {vec3(0.4f,0.4f,0.8f),vec3(0.8f,0.05f,0.1f),vec3(0.9f,0.4f,0.1f),vec3(0.3f,0.7,0.3f),vec3(0.1f,0.1f,0.9f),vec3(.8,0,.8)};
+      // vector<vec3> thermal = {(vec3(0,0,0.4f),vec3(0.5f,0,0.5f),vec3(0.9f,0,0),vec3(1,1,0))};
+      // vector<vec3> psyche = {vec3(0,0,0.5f),vec3(1,1,1),vec3(0.6f,0,0.6f),vec3(1,1,1)};
+      // vector<vec3> inverse = {vec3(1,1,1),vec3(0.1f,0.8f,0.1f),vec3(1,0.2f,0.8f),vec3(0.3f,0,0.3f)};
+      // vector<vec3> blue = {vec3(0,0,0.5f),vec3(0,0.8f,0.8f),vec3(0,1,0),vec3(1,1,0)};
+      // pallette = {thermal, psyche, inverse, blue};
       palIndx = 0;
    }
 
@@ -121,6 +125,8 @@ public:
          currentShader = ((currentShader + 1) % shaders.size());
       } else if (key == 77 || key == 109){
          material.col = colors[(++colIndx) % (colors.size())];
+         palIndx++;
+
       }else if (key == GLFW_KEY_RIGHT){
          lAzimuth += 0.5f;
       } else if (key == GLFW_KEY_LEFT){
@@ -238,7 +244,7 @@ protected:
    float lAzimuth;
    vector<vec3> colors;
    int colIndx;
-   vector<vec3> pallette[4];
+   vector<vector<vec3>> pallette;
    int palIndx;
 
 
