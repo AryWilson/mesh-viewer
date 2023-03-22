@@ -24,16 +24,39 @@ namespace agl {
    }
 
    PLYMesh::PLYMesh() {
+      // cout<<"hi"<<endl;
       
    }
 
-   void PLYMesh::init() {
-      assert(_positions.size() != 0);
-      initBuffers(&_faces, &_positions, &_normals);
-   }
+//    PLYMesh::PLYMesh(const PLYMesh& orig){
+//    // copy constructor
+//    _faces = orig.indices();
+//    _positions = orig.positions();
+//    _normals = orig.normals();
+  
+// }
+
+//    PLYMesh& PLYMesh::operator=(const PLYMesh& orig) {
+//       // assignment operator
+//       if (&orig == this) {
+//          return *this;
+//       }
+//       clear();
+
+//       _faces = orig.indices();
+//       _positions = orig.positions();
+//       _normals = orig.normals();
+         
+//       return *this;
+//    }
 
    PLYMesh::~PLYMesh() {
       clear();
+   }   
+   
+   void PLYMesh::init() {
+      assert(_positions.size() != 0);
+      initBuffers(&_faces, &_positions, &_normals);
    }
 
    bool PLYMesh::load(const std::string& filename) {
@@ -118,9 +141,7 @@ namespace agl {
 
       }
       file.close();
-
-      // todo: your code here
-      return false;
+      return true;
    }
 
    glm::vec3 PLYMesh::minBounds() const {

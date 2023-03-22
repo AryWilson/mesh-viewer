@@ -37,8 +37,9 @@ public:
       lookPos = vec3(0, 0, 0);
       upDir = vec3(0, 1, 0);
       models = GetFilenamesInDir("../models", "ply");
+      // models = {"cube.ply"};
       currentModel = 0;
-      shaders = {"normals","phong-vertex","phong-pixel", "toon", "thermal"};
+      shaders = {"normals","phong-vertex","phong-pixel", "thermal"};
       currentShader = 0;
       mesh = PLYMesh("../models/cube.ply");
 
@@ -162,10 +163,12 @@ public:
 // loockAt(vec3(0,0,0),lookPos,upDir);
 
 //load in mesh
+   void fnExit(){ mesh.clear();}
 
 
 
    void draw() {
+
       update();
 
       renderer.beginShader(shaders[currentShader]); // activates shader with given name
@@ -174,13 +177,6 @@ public:
       float aspect = ((float)width()) / height();
       // renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
 
-      // renderer.rotate(vec3(0,0,0));
-      // renderer.scale(vec3(1,1,1));
-      // renderer.translate(vec3(0,0,0));
-      // mesh.load("../models/"+models[currentModel]);
-      // renderer.mesh(mesh);
-      // renderer.cube(); // for debugging!
-
       //find bounding box
       vec3 bbMin = mesh.minBounds();
       vec3 bbMax = mesh.maxBounds();
@@ -188,21 +184,19 @@ public:
       float bbCenty = (bbMin.y + bbMax.y)/2.0f;
       float bbCentz = (bbMin.z + bbMax.z)/2.0f;
       //translate bounding box to 0,0,0
-      // renderer.translate(vec3(-1*bbCentx,-1*bbCenty,-1*bbCentz));
       float bbXlen = abs(bbMax.x - bbMin.x);
       float bbYlen = abs(bbMax.y - bbMin.y);
       float bbZlen = abs(bbMax.z - bbMin.z);
       float d = std::max(bbXlen,std::max(bbYlen,bbZlen));
-      //scale bounding box to correct size, unit cube? camera at 0,0,0
+      //scale bounding box to correct size, unit cube
       renderer.scale(vec3(1.0f/d, 1.0f/d, 1.0f/d));
       renderer.translate(vec3(-1*bbCentx,-1*bbCenty,-1*bbCentz));
 
-      //translate bonuding box to unit cub coords?
-      // renderer.translate(vec3(.5,.5,.5));
       //set camera position
       renderer.lookAt(eyePos,lookPos,upDir);
       //project
       renderer.perspective(glm::radians(60.0f), aspect, 0.1f, 50.0f);
+
 
       // renderer.mesh(mesh);
 
@@ -249,15 +243,13 @@ protected:
 
 };
 
-void fnExit(){
-   cout << "hi" <<endl;
-   // closedir();
+// void fnExit(){ }
 
-}
 
 int main(int argc, char** argv)
 {
-   atexit (fnExit);
+   // atexit (fnExit);
+
    MeshViewer viewer;
    viewer.run();
    return 0;
